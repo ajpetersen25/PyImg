@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import background_subtraction as bs
+from background_subtraction import *
 import numpy as np
 import os,sys
 import argparse
