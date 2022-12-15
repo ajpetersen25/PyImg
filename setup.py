@@ -13,7 +13,7 @@ setup(
     install_requires=['numpy', 'scipy', 'scikit-image','pandas','matplotlib','pyyaml', 'tk', 'Pillow', 'opencv-python'],
     author='Alec Petersen',
     author_email='alecjpetersen@gmail.com',
-    license='MIT',
+    license='GNU GENERAL PUBLIC LICENSE',
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     test_suite='tests'
