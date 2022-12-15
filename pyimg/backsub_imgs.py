@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from background_subtraction import *
+from pyimg.background_subtraction import *
 import numpy as np
 import os,sys
 import argparse
