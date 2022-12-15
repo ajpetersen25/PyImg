@@ -25,16 +25,44 @@ def backsub_imgs(img_dir, method):
   
   
   
-def min_sub(img):
+def min_sub(imgs,paired=False,f_increment=1):
+  " input list of images "
+  if paired==False:
+    print('Continuous background subtraction')
+    print('Finding minimum')
+    d = imgs[0].max*np.ones(img.shape())
+    frames = np.arange(0,len(imgs),f_increment)
+    for f in frames:
+      d = np.minimum(d,f)
+    print('Performing backgroud subtraction\n')
+    backsubed = list()
+    for img in imgs:
+      backsubed.append(img - d)
+
+      
+  elif paired==True:
+    print('Paired background subtraction')
+    print('Finding minimum')
+    d1 = imgs[0].max*np.ones(img.shape())
+    d2 = imgs[1].max*np.ones(img.shape())
+    for f in np.arange(0,len(imgs),2)
+      d1 = np.minimum(d1,imgs[f])
+      d2 = np.minimum(d2,imgs[f+1])
+    print('Performing backgroud subtraction\n')
+    backsubed = list()
+    for f in np.arange(0,len(imgs),2):
+      backsubed.append(imgs[f] - d1)
+      backsubed.append(imgs[f+1] - d2)
+   
+  return(backsubed)
+  
+def mean_sub(imgs,n_frames='all'):
   
   
-def mean_sub(img,n_frames='all'):
+def median_sub(imgs,n_frames='all'):
   
   
-def median_sub(img,n_frames='all'):
+def gaussian_avg(imgs,n_frames='all'):
   
-  
-def gaussian_avg(img,n_frames='all'):
-  
-def GMM_sub(img, n_frames='all'):
+def GMM_sub(imgs, n_frames='all'):
   
