@@ -55,24 +55,18 @@ def moving_min(imgs,paired=False,f_increment):
       d = imgs[0].max*np.ones(img[0].shape)
       if fi<width:
         for i in np.arange(0,(2*width)):
-          d = np.minimum(d,imgs[fi])
+          d = np.minimum(d,imgs[i])
         backsubed.append(imgs[fi]-d)
       elif fi+width>len(imgs):
         d_from = len(imgs)-fi
         for i in np.arange(fi-(width+d_from),fi+d_from):
-          d = np.minimum(d,imgs[fi])
+          d = np.minimum(d,imgs[i])
         backsubed.append(imgs[fi]-d)
       else:
         for i in np.arange(fi-width,fi+width):
-          d = np.minimum(d,imgs[fi])
+          d = np.minimum(d,imgs[i])
         backsubed.append(imgs[fi]-d)
-        
-      d = np.minimum(d,f)
-    print('Performing backgroud subtraction\n')
-    
-    for img in imgs:
-      backsubed.append(img - d)
-
+       
       
   elif paired==True:
     print('Paired background subtraction')
@@ -83,21 +77,21 @@ def moving_min(imgs,paired=False,f_increment):
       d2 = imgs[0].max*np.ones(img[0].shape)
       if fi<width:
         for i in np.arange(0,(2*width),2):
-          d1 = np.minimum(d1,imgs[fi])
-          d2 = np.minimum(d1,imgs[fi+1])
+          d1 = np.minimum(d1,imgs[i])
+          d2 = np.minimum(d1,imgs[i+1])
         backsubed.append(imgs[fi]-d1)
         backsubed.append(imgs[fi+1]-d2)
       elif fi+width>len(imgs):
         d_from = len(imgs)-fi
         for i in np.arange(fi-(width+d_from),fi+d_from,2):
-          d1 = np.minimum(d1,imgs[fi])
-          d2 = np.minimum(d1,imgs[fi+1])
+          d1 = np.minimum(d1,imgs[i])
+          d2 = np.minimum(d1,imgs[i+1])
         backsubed.append(imgs[fi]-d1)
         backsubed.append(imgs[fi+1]-d2)
       else:
         for i in np.arange(fi-width,fi+width,2):
-          d1 = np.minimum(d1,imgs[fi])
-          d2 = np.minimum(d1,imgs[fi+1])
+          d1 = np.minimum(d1,imgs[i])
+          d2 = np.minimum(d1,imgs[i+1])
         backsubed.append(imgs[fi]-d1)
         backsubed.append(imgs[fi+1]-d2)
    
@@ -124,7 +118,7 @@ def min_sub(imgs,paired=False,f_increment=1):
     print('Finding minimum')
     d1 = imgs[0].max*np.ones(img[0].shape)
     d2 = imgs[1].max*np.ones(img[1].shape)
-    for f in np.arange(0,len(imgs),2)
+    for f in np.arange(0,len(imgs),2):
       d1 = np.minimum(d1,imgs[f])
       d2 = np.minimum(d2,imgs[f+1])
     print('Performing backgroud subtraction\n')
@@ -156,7 +150,7 @@ def mean_sub(imgs,paired=False,f_increment=1):
     print('Finding minimum')
     d1 = np.zeros(img[0].shape)
     d2 = np.zeros(img[1].shape)
-    for f in np.arange(0,len(imgs),2)
+    for f in np.arange(0,len(imgs),2):
       d1 += imgs[f]
       d2 += imgs[f+1]
     d1 = d1/(len(imgs)/2)
@@ -191,7 +185,7 @@ def median_sub(imgs,paired=False,f_increment=1):
     print('Finding minimum')
     d1 = []
     d2 = []
-    for f in np.arange(0,len(imgs),2)
+    for f in np.arange(0,len(imgs),2):
       d1.append(imgs[f])
       d2.append(imgs[f+1])
     d1 = np.array(d1,dtype='object')
