@@ -17,7 +17,7 @@ import imageio.v3 as iio
 from pathlib import Path
 
 
-def backsub_imgs(img_dir, save_dir, method,f_increment=1,paired=False,n_frames='all'):
+def backsub_imgs(img_dir, save_dir, method,f_increment=1,paired=False,n_frames='all',start_frame=0, width = 100):
   " Choose a method and perform batch background subtraction "
   imgs = list()
   if n_frames == 'all':
@@ -25,37 +25,40 @@ def backsub_imgs(img_dir, save_dir, method,f_increment=1,paired=False,n_frames='
         if not file.is_file():
             continue
 
-        imgs.append(iio.imread(file))
+        imgs.append(file)
   else:
-    for file in Path(img_dir).iterdir()[0:n_frames]:
-    if not file.is_file():
+    for file in Path(img_dir).iterdir()[start_frame:n_frames]:
+      if not file.is_file():
         continue
 
-    imgs.append(iio.imread(file))
-  
-  case "min_sub":
-    backsubed = min_sub(imgs,paired,f_increment)
-  case "mean_sub":
-    backsubed = mean_sub(imgs,paired,f_increment)
+    imgs.append(file)
+
+  match method:
+    case "min_sub":
+      backsubed = min_sub(imgs,paired,f_increment)
+    case "mean_sub":
+      backsubed = mean_sub(imgs,paired,f_increment)
+    case "moving_min":
+      backsubed = moving_min(imgs, paired,f_increment,width)
   
   
   # if save_dir doesn't exist, create it
   # imwrite in save_dir
   
-def moving_min(imgs,paired=False,f_increment=1):
+def moving_min(imgs,paired=False,f_increment=1,width):
   " input list of images "
   backsubed = list()
   if paired==False:
     print('Continuous background subtraction')
     print('Finding minimum')
-    
+
+    img0 =  iio.imread(imgs[0])
     frames = np.arange(0,len(imgs),f_increment)
-    width = 100
     for fi, f in enumerate(frames):
-      d = imgs[0].max*np.ones(imgs[0].shape)
+      d = img0.max*np.ones(img0.shape)
       if fi<width:
         for i in np.arange(0,(2*width)):
-          d = np.minimum(d,imgs[i])
+          d = np.minimum(d,iio.imread(imgs[i]))
         backsubed.append(imgs[fi]-d)
       elif fi+width>len(imgs):
         d_from = len(imgs)-fi
