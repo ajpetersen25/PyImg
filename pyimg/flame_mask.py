@@ -136,7 +136,7 @@ def main():
     save_path = "/share/crsp/lab/tirthab/alecjp/2023_11_blodgett/zoom/images/masks/p1/"
     filenames = []
     for i in imgs:
-      filenames.append(os.path.basename(imgs[i])
+        filenames.append(os.path.basename(imgs[i]))
     cores = 10
     f_tot = len(imgs)
     objList = list(
