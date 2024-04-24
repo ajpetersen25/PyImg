@@ -150,7 +150,7 @@ def main():
     )
 
     pool = mp.Pool(processes=cores)
-    pool.map(save_mask, objList)
+    pool.map(save_masks, objList)
 
 
 if __name__ == "__main__":
