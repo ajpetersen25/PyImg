@@ -111,8 +111,8 @@ def make_mask(params):
   img_flame = np.zeros(img_frame.shape, np.uint8)
   for c in flame_contours:
       cnt_pts = np.squeeze(c, axis=1)
-      img_flame[cnt_pts[:, 1], cnt_pts[:, 0]] = 1
-  mask = mask_from_contours(img_flame)
+      img_flame[cnt_pts[:, 1], cnt_pts[:, 0]] = 255
+  mask = mask_from_contours(img_flame).astype('uint8')
   return(mask)
 
 def save_masks(params):
@@ -124,20 +124,20 @@ def save_masks(params):
   img_flame = np.zeros(img_frame.shape, np.uint8)
   for c in flame_contours:
       cnt_pts = np.squeeze(c, axis=1)
-      img_flame[cnt_pts[:, 1], cnt_pts[:, 0]] = 1
-  mask = mask_from_contours(img_flame)
+      img_flame[cnt_pts[:, 1], cnt_pts[:, 0]] = 255
+  mask = mask_from_contours(img_flame).astype('uint8')
   iio.imwrite(save_path+filename, mask)
   
 def main():
     threshold = 24
     size_threshold = 80
-    path = "/share/crsp/lab/tirthab/alecjp/2023_11_blodgett/zoom/images/grayscale/p1/"
+    path = "/share/crsp/lab/tirthab/alecjp/2023_11_blodgett/zoom/images/grayscale/p3/"
     imgs = glob.glob(path+'*.tif')
-    save_path = "/share/crsp/lab/tirthab/alecjp/2023_11_blodgett/zoom/images/masks/p1/"
+    save_path = "/share/crsp/lab/tirthab/alecjp/2023_11_blodgett/zoom/images/masks/p3/"
     filenames = []
     for i in imgs:
         filenames.append(os.path.basename(i))
-    cores = 10
+    cores = 4
     f_tot = len(imgs)
     objList = list(
         zip(
