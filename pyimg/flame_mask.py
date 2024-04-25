@@ -79,24 +79,28 @@ def find_flame_contour(img_frame, threshold,size_threshold):
 
     img_bin = img_frame > threshold
     contours = find_contours(img_frame, threshold)
-    c_len = np.array([len(c) for c in contours])
-    """flame_contour = contours[np.where(c_len == np.max(c_len))[0][0]]
-    if 
-    try:
-        cnt_bottom = np.where(np.squeeze(flame_contour, axis=1)[:, 1] == 1)[0]
-    except:
-        cnt_bottom = np.where(np.squeeze(flame_contour, axis=1)[:, 1] == 0)[0]
-    fill_lims = [
-        np.squeeze(flame_contour[cnt_bottom])[:, 0].min(),
-        np.squeeze(flame_contour[cnt_bottom])[:, 0].max(),
-    ]
-    img_bin[0, fill_lims[0] : fill_lims[1]] = 1
-    contours = find_contours(img_bin, 0.5)
-    c_len = np.array([len(c) for c in contours])
-    return contours[np.where(c_len == np.max(c_len))[0][0]]"""
     flame_contours = []
-    for c in np.where(c_len > size_threshold)[0]:
-        flame_contours.append(contours[c])
+    try:
+        c_len = np.array([len(c) for c in contours])
+        """flame_contour = contours[np.where(c_len == np.max(c_len))[0][0]]
+        if 
+        try:
+            cnt_bottom = np.where(np.squeeze(flame_contour, axis=1)[:, 1] == 1)[0]
+        except:
+            cnt_bottom = np.where(np.squeeze(flame_contour, axis=1)[:, 1] == 0)[0]
+        fill_lims = [
+            np.squeeze(flame_contour[cnt_bottom])[:, 0].min(),
+            np.squeeze(flame_contour[cnt_bottom])[:, 0].max(),
+        ]
+        img_bin[0, fill_lims[0] : fill_lims[1]] = 1
+        contours = find_contours(img_bin, 0.5)
+        c_len = np.array([len(c) for c in contours])
+        return contours[np.where(c_len == np.max(c_len))[0][0]]"""
+        
+        for c in np.where(c_len > size_threshold)[0]:
+            flame_contours.append(contours[c])
+    except:
+        pass
     return(flame_contours)
 
 
@@ -123,9 +127,9 @@ def save_masks(params):
   for c in flame_contours:
       cnt_pts = np.squeeze(c, axis=1)
       img_flame[cnt_pts[:, 1], cnt_pts[:, 0]] = 255
-  mask = mask_from_contours(img_flame)
-  #iio.imwrite(save_path+filename, mask)
-  numpy.save(save_path+filename, mask)
+  mask = mask_from_contours(img_flame).astype('uint8')
+  iio.imwrite(save_path+filename, mask)
+  #numpy.save(save_path+filename, mask)
 
 def main():
     threshold = 24
@@ -135,7 +139,7 @@ def main():
     save_path = "/share/crsp/lab/tirthab/alecjp/2023_11_blodgett/zoom/images/masks/p3/"
     filenames = []
     for i in imgs:
-        filenames.append(Path(basename(i)).stem)
+        filenames.append(Path(os.path.basename(i)).stem)
     cores = 4
     f_tot = len(imgs)
     objList = list(
