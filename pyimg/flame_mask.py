@@ -1,9 +1,7 @@
 import time
 import imageio.v3 as iio
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-import matplotlib.colors as colors
+from pathlib import Path
 from scipy.stats import norm
 from scipy.stats import binned_statistic as bs
 from skimage.morphology import (
@@ -125,9 +123,10 @@ def save_masks(params):
   for c in flame_contours:
       cnt_pts = np.squeeze(c, axis=1)
       img_flame[cnt_pts[:, 1], cnt_pts[:, 0]] = 255
-  mask = mask_from_contours(img_flame).astype('uint8')
-  iio.imwrite(save_path+filename, mask)
-  
+  mask = mask_from_contours(img_flame)
+  #iio.imwrite(save_path+filename, mask)
+  numpy.save(save_path+filename, mask)
+
 def main():
     threshold = 24
     size_threshold = 80
@@ -136,7 +135,7 @@ def main():
     save_path = "/share/crsp/lab/tirthab/alecjp/2023_11_blodgett/zoom/images/masks/p3/"
     filenames = []
     for i in imgs:
-        filenames.append(os.path.basename(i))
+        filenames.append(Path(basename(i)).stem)
     cores = 4
     f_tot = len(imgs)
     objList = list(
