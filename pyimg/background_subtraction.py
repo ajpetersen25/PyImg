@@ -17,21 +17,6 @@ import imageio.v3 as iio
 
 
 def backsub_imgs(imgs, masks, save_dir, filenames, method, f_increment=1, paired=False, n_frames='all', start_frame=0, width=1000):
-  " Choose a method and perform batch background subtraction "
-  # imgs = list()
-  # if n_frames == 'all':
-  #   for file in Path(img_dir).iterdir():
-  #       if not file.is_file():
-  #           continue
-
-  #       imgs.append(file)
-  # else:
-  #   for file in Path(img_dir).iterdir()[start_frame:n_frames]:
-  #     if not file.is_file():
-  #       continue
-
-  #   imgs.append(file)
-
   match method:
     case "min_sub":
       backsubed = min_sub(imgs, paired, f_increment)
