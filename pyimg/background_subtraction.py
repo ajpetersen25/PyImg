@@ -14,12 +14,11 @@ requires grayscale images
 from pathlib import Path
 import numpy as np
 import imageio.v3 as iio
-from pathlib import Path
 
 
-def backsub_imgs(img_dir, save_dir, method,f_increment=1,paired=False,n_frames='all',start_frame=0, width = 100):
+def backsub_imgs(imgs, masks, save_dir,filenames, method,f_increment=1,paired=False,n_frames='all',start_frame=0, width = 100):
   " Choose a method and perform batch background subtraction "
-  imgs = list()
+  """imgs = list()
   if n_frames == 'all':
     for file in Path(img_dir).iterdir():
         if not file.is_file():
@@ -31,7 +30,7 @@ def backsub_imgs(img_dir, save_dir, method,f_increment=1,paired=False,n_frames='
       if not file.is_file():
         continue
 
-    imgs.append(file)
+    imgs.append(file)"""
 
   match method:
     case "min_sub":
@@ -39,7 +38,7 @@ def backsub_imgs(img_dir, save_dir, method,f_increment=1,paired=False,n_frames='
     case "mean_sub":
       backsubed = mean_sub(imgs,paired,f_increment)
     case "moving_min":
-      backsubed = moving_min(imgs, paired,f_increment,width)
+      backsubed = moving_min(imgs, masks,filenames,paired,f_increment,width)
   
   
   # if save_dir doesn't exist, create it
@@ -47,28 +46,29 @@ def backsub_imgs(img_dir, save_dir, method,f_increment=1,paired=False,n_frames='
   
 def moving_min(imgs,paired=False,f_increment=1,width):
   " input list of images "
-  backsubed = list()
+  #backsubed = list()
   if paired==False:
     print('Continuous background subtraction')
     print('Finding minimum')
 
-    img0 =  iio.imread(imgs[0])
+    img0 = ~np.load(masks[0]).T*iio.imread(imgs[0])
     frames = np.arange(0,len(imgs),f_increment)
     for fi, f in enumerate(frames):
       d = img0.max*np.ones(img0.shape)
       if fi<width:
         for i in np.arange(0,(2*width)):
-          d = np.minimum(d,iio.imread(imgs[i]))
-        backsubed.append(imgs[fi]-d)
+          d = np.minimum(d,~np.load(masks[i]).T*iio.imread(imgs[i]))
+        iio.imwrite(save_dir+filenames[fi], imgs[fi]-d)
+        #backsubed.append(imgs[fi]-d)
       elif fi+width>len(imgs):
         d_from = len(imgs)-fi
         for i in np.arange(fi-(width+d_from),fi+d_from):
-          d = np.minimum(d,imgs[i])
-        backsubed.append(imgs[fi]-d)
+          d = np.minimum(d,~np.load(masks[i]).T*iio.imread(imgs[i]))
+        iio.imwrite(save_dir+filenames[fi], imgs[fi]-d)
       else:
         for i in np.arange(fi-width,fi+width):
-          d = np.minimum(d,imgs[i])
-        backsubed.append(imgs[fi]-d)
+          d = np.minimum(d,~np.load(masks[i]).T*iio.imread(imgs[i]))
+        iio.imwrite(save_dir+filenames[fi], imgs[fi]-d)
        
       
   elif paired==True:
@@ -132,7 +132,7 @@ def min_sub(imgs,paired=False,f_increment=1):
    
   return(backsubed)
   
-def mean_sub(img_files,paired=False,f_increment=1):
+def mean_sub(img_files,paired=False,f_increm~mask.T*iio.imread(imgs[0])ent=1):
   " input list of images "
   if paired==False:
     print('Continuous background subtraction')
@@ -210,4 +210,27 @@ def gaussian_avg(imgs,n_frames='all'):
 def GMM_sub(imgs, n_frames='all'):
   bsub = cv2.createBackgroundSubtractorGMG('InitializationFrames',100,'DecisionThreshold',20)
   
-  
+def apply_mask(mask,img):
+  return(~mask.T*iio.imread(img)
+         
+def main():
+
+    path = "/share/crsp/lab/tirthab/alecjp/2023_11_blodgett/zoom/images/grayscale/p3/"
+    mask_path = "/dfs9/tirthab/alecjp/2023_11_blodgett/zoom/masks/p3/"
+    imgs = glob.glob(path+'*.tif')
+    masks = glob.glob(mask_path+'*.npy')
+    save_path = "/dfs9/tirthab/alecjp/2023_11_blodgett/zoom/bgsub/p3/"
+    method = "moving_min"
+    filenames = []
+    f_increment = 1
+    paired = False
+    n_frames = 'all'
+    start_frame = 0
+    width = 1000
+    for i in imgs:
+        filenames.append(Path(os.path.basename(i)).stem)
+    
+    backsub_imgs(imgs,masks,save_path,filenames,f_increment,paired,n_frames,start_frame,width)
+
+if __name__ == "__main__":
+    main()
