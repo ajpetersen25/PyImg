@@ -16,7 +16,7 @@ import numpy as np
 import imageio.v3 as iio
 
 
-def backsub_imgs(imgs, masks, save_dir, filenames, method, f_increment=1, paired=False, n_frames='all', start_frame=0, width=100):
+def backsub_imgs(imgs, masks, save_dir, filenames, method, f_increment=1, paired=False, n_frames='all', start_frame=0, width=1000):
   " Choose a method and perform batch background subtraction "
   # imgs = list()
   # if n_frames == 'all':
@@ -38,14 +38,14 @@ def backsub_imgs(imgs, masks, save_dir, filenames, method, f_increment=1, paired
     case "mean_sub":
       backsubed = mean_sub(imgs, paired, f_increment)
     case "moving_min":
-      backsubed = moving_min(imgs, masks, filenames,
+      backsubed = moving_min(imgs, masks, save_dir, filenames,
                              paired, f_increment, width)
 
   # if save_dir doesn't exist, create it
   # imwrite in save_dir
 
 
-def moving_min(imgs, paired=False, f_increment=1, width):
+def moving_min(imgs, masks,save_dir, filenames,paired=False, f_increment=1, width):
   " input list of images "
   #backsubed = list()
   if paired == False:
@@ -229,7 +229,7 @@ def main():
     for i in imgs:
         filenames.append(Path(os.path.basename(i)).stem)
     
-    backsub_imgs(imgs,masks,save_path,filenames,f_increment,paired,n_frames,start_frame,width)
+    backsub_imgs(imgs,masks,save_path,filenames,method,f_increment,paired,n_frames,start_frame,width)
 
 if __name__ == "__main__":
     main()
