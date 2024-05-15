@@ -41,7 +41,7 @@ def moving_min(imgs, masks,save_dir, filenames,paired=False, f_increment=1, widt
     img0 = ~np.load(masks[0]).T*iio.imread(imgs[0])
     frames = np.arange(0, len(imgs), f_increment)
     for fi, f in enumerate(frames):
-      d = img0.max*np.ones(img0.shape)
+      d = img0.max()*np.ones(img0.shape)
       if fi < width:
         for i in np.arange(0, (2*width)):
           d = np.minimum(d, ~np.load(masks[i]).T*iio.imread(imgs[i]))
@@ -62,8 +62,8 @@ def moving_min(imgs, masks,save_dir, filenames,paired=False, f_increment=1, widt
     print('Finding minimum')
     width = 100
     for fi in np.arange(0, len(imgs), 2):
-      d1 = imgs[0].max*np.ones(imgs[0].shape)
-      d2 = imgs[0].max*np.ones(imgs[0].shape)
+      d1 = imgs[0].max()*np.ones(imgs[0].shape)
+      d2 = imgs[0].max()*np.ones(imgs[0].shape)
       if fi < width:
         for i in np.arange(0, (2*width), 2):
           d1 = np.minimum(d1, imgs[i])
@@ -92,7 +92,7 @@ def min_sub(imgs, paired=False, f_increment=1):
   if paired == False:
     print('Continuous background subtraction')
     print('Finding minimum')
-    d = imgs[0].max*np.ones(imgs[0].shape)
+    d = imgs[0].max()*np.ones(imgs[0].shape)
     frames = np.arange(0, len(imgs), f_increment)
     for f in frames:
       d = np.minimum(d, f)
@@ -104,8 +104,8 @@ def min_sub(imgs, paired=False, f_increment=1):
   elif paired == True:
     print('Paired background subtraction')
     print('Finding minimum')
-    d1 = imgs[0].max*np.ones(imgs[0].shape)
-    d2 = imgs[1].max*np.ones(imgs[1].shape)
+    d1 = imgs[0].max()*np.ones(imgs[0].shape)
+    d2 = imgs[1].max()*np.ones(imgs[1].shape)
     for f in np.arange(0, len(imgs), 2):
       d1 = np.minimum(d1, imgs[f])
       d2 = np.minimum(d2, imgs[f+1])
