@@ -153,7 +153,7 @@ def mean_sub(img_files, paired=False, f_increment=1):
 
 
 def median_sub(imgs, paired=False, f_increment=1):
-    " input list of images "
+  " input list of images "
   if paired==False:
     print('Continuous background subtraction')
     print('Finding minimum')
