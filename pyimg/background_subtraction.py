@@ -202,8 +202,8 @@ def main():
 
     path = "/share/crsp/lab/tirthab/alecjp/2023_11_blodgett/zoom/images/grayscale/p3/"
     mask_path = "/dfs9/tirthab/alecjp/2023_11_blodgett/zoom/masks/p3/"
-    imgs = glob.glob(path+'gframe*.tif')
-    masks = glob.glob(mask_path+'gframe*.npy')
+    imgs = np.sort(glob.glob(path+'gframe*.tif'))
+    masks = np.sort(glob.glob(mask_path+'gframe*.npy'))
     save_path = "/dfs9/tirthab/alecjp/2023_11_blodgett/zoom/bgsub/p3/"
     method = "moving_min"
     filenames = []
