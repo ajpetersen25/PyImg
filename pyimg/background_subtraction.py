@@ -189,10 +189,10 @@ def median_sub(imgs, paired=False, f_increment=1):
    
   return(backsubed)
   
-def gaussian_avg(imgs,n_frames='all'):
-  
-def GMM_sub(imgs, n_frames='all'):
-  bsub = cv2.createBackgroundSubtractorGMG('InitializationFrames',100,'DecisionThreshold',20)
+#def gaussian_avg(imgs,n_frames='all'):
+#  
+#def GMM_sub(imgs, n_frames='all'):
+#  bsub = cv2.createBackgroundSubtractorGMG('InitializationFrames',100,'DecisionThreshold',20)
   
 def apply_mask(mask,img):
   return(~mask.T*iio.imread(img)
