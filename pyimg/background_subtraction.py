@@ -213,7 +213,7 @@ def main():
     start_frame = 0
     width = 1000
     for i in imgs:
-        filenames.append(Path(os.path.basename(i)).stem)
+        filenames.append(os.path.basename(i))
     
     backsub_imgs(imgs,masks,save_path,filenames,method,f_increment,paired,n_frames,start_frame,width)
 
