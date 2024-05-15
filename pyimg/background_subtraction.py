@@ -45,17 +45,17 @@ def moving_min(imgs, masks,save_dir, filenames,paired=False, f_increment=1, widt
       if fi < width:
         for i in np.arange(0, (2*width)):
           d = np.minimum(d, ~np.load(masks[i]).T*iio.imread(imgs[i]))
-        iio.imwrite(save_dir+filenames[fi], imgs[fi]-d)
+        iio.imwrite(save_dir+filenames[fi], iio.imread(imgs[fi])-d)
         #backsubed.append(imgs[fi]-d)
       elif fi+width > len(imgs):
         d_from = len(imgs)-fi
         for i in np.arange(fi-(width+d_from), fi+d_from):
           d = np.minimum(d, ~np.load(masks[i]).T*iio.imread(imgs[i]))
-        iio.imwrite(save_dir+filenames[fi], imgs[fi]-d)
+        iio.imwrite(save_dir+filenames[fi], iio.imread(imgs[fi])-d)
       else:
         for i in np.arange(fi-width, fi+width):
           d = np.minimum(d, ~np.load(masks[i]).T*iio.imread(imgs[i]))
-        iio.imwrite(save_dir+filenames[fi], imgs[fi]-d)
+        iio.imwrite(save_dir+filenames[fi], iio.imread(imgs[fi])-d)
 
   elif paired == True:
     print('Paired background subtraction')
