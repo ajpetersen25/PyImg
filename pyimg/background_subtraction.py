@@ -160,7 +160,7 @@ def median_sub(imgs, paired=False, f_increment=1):
     d = []
     frames = np.arange(0,len(imgs),f_increment)
     for f in frames:
-      d.append(imgs[f]) auto 
+      d.append(imgs[f])
     d = np.array(d,dtype='object')
     d = np.median(d,axis=0)
     print('Performing backgroud subtraction\n')
