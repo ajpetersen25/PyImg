@@ -41,7 +41,7 @@ def moving_min(imgs, masks,save_dir, filenames,paired=False, f_increment=1, widt
     img0 = ~np.load(masks[0]).T*iio.imread(imgs[0])
     frames = np.arange(0, len(imgs), f_increment)
     for fi, f in enumerate(frames):
-      d = img0.max()*np.ones(img0.shape)
+      d = img0#.max()*np.ones(img0.shape)
       if fi < width:
         for i in np.arange(0, (2*width)):
           d = np.minimum(d, ~np.load(masks[i]).T*iio.imread(imgs[i]))
