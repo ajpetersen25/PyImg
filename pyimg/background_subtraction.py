@@ -30,7 +30,7 @@ def backsub_imgs(imgs, masks, save_dir, filenames, method, f_increment=1, paired
   # imwrite in save_dir
 
 
-def moving_min(imgs, masks,save_dir, filenames,paired=False, f_increment=1, width):
+def moving_min(imgs, masks,save_dir, filenames,paired=False, f_increment=1, width=1000):
   " input list of images "
   #backsubed = list()
   if paired == False:
@@ -117,7 +117,7 @@ def min_sub(imgs, paired=False, f_increment=1):
   return(backsubed)
 
 
-def mean_sub(img_files, paired=False, f_increm~mask.T*iio.imread(imgs[0])ent=1):
+def mean_sub(img_files, paired=False, f_increment=1):
   " input list of images "
   if paired == False:
     print('Continuous background subtraction')
